@@ -8,7 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+frontend_url = os.getenv('FRONTEND_URL')
+if frontend_url:
+    CORS(app, resources={r"/api/*": {"origins": [frontend_url]}})
+else:
+    CORS(app)
 
 # Get API key from environment
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')

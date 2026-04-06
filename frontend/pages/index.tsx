@@ -6,6 +6,9 @@ interface Message {
   content: string;
 }
 
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -39,7 +42,7 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/chat', {
+      const response = await axios.post(`${BACKEND_URL}/api/chat`, {
         message: userMessage,
         history: messages,
       });
@@ -62,7 +65,7 @@ export default function Chat() {
         } else if (err.response?.status === 500) {
           errorMessage = err.response.data?.error || 'Server error';
         } else if (err.code === 'ECONNREFUSED') {
-          errorMessage = 'Cannot connect to backend. Is it running on localhost:5000?';
+          errorMessage = `Cannot connect to backend. Is it running on ${BACKEND_URL}?`;
         } else {
           errorMessage = err.message || errorMessage;
         }

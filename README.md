@@ -255,20 +255,39 @@ All dependencies are compatible with Python 3.7 and 3.8.
 
 ## 🚢 Production Deployment
 
-For production, consider:
+### Backend (Render, pinned to Python 3.8)
 
-1. **Backend:**
-   - Use a production WSGI server (gunicorn, waitress)
-   - Set `DEBUG=False`
-   - Use environment variable for API key
-   - Implement rate limiting
-   - Add request validation
+This project includes `backend/Dockerfile` with `python:3.8-slim` so your backend runs on Python 3.8 in production.
 
-2. **Frontend:**
-   - Build the production bundle: `npm run build`
-   - Deploy to Vercel or similar
-   - Update backend URL in environment variables
-   - Enable HTTPS
+1. Push code to GitHub
+2. Create a new **Web Service** on Render
+3. Connect this repository
+4. Set **Root Directory** to `backend`
+5. Render will detect Docker automatically
+6. Add environment variables:
+  - `GROQ_API_KEY=your_real_key`
+  - `FRONTEND_URL=https://your-frontend-domain.vercel.app`
+7. Deploy
+
+After deploy, test:
+
+```bash
+https://your-backend-service.onrender.com/api/health
+```
+
+### Frontend (Vercel)
+
+1. Create a new project on Vercel and import this repo
+2. Set **Root Directory** to `frontend`
+3. Add env variable:
+
+```bash
+NEXT_PUBLIC_BACKEND_URL=https://your-backend-service.onrender.com
+```
+
+4. Deploy
+
+The frontend reads backend URL from `NEXT_PUBLIC_BACKEND_URL` and falls back to `http://localhost:5000` for local development.
 
 ## 📝 Example Usage
 
@@ -288,6 +307,16 @@ npm run dev
 ```
 
 Then open `http://localhost:3000` in your browser.
+
+## ✅ Python 3.8 Compatibility Proof
+
+This repository includes a GitHub Actions workflow at `.github/workflows/python-compatibility.yml`.
+
+It validates backend compatibility on:
+- Python 3.8
+- Python 3.11
+
+Use the GitHub **Actions** tab as cloud proof that your code works on Python 3.8 even if Python 3.8 is not installed on your local system.
 
 ## 🤖 Model Information
 
