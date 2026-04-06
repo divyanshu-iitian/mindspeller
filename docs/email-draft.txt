@@ -1,0 +1,23 @@
+Subject: Mindspeller chatbot implementation using older Python compatibility
+
+Hi [Name],
+
+I wanted to share an update on the Mindspeller chatbot task. I understood the requirement that the backend should remain compatible with an older Python runtime, specifically Python 3.8, instead of depending on newer Python-only libraries.
+
+After reviewing the constraints, I implemented the chatbot in a compatibility-first way. Instead of using the official Groq Python SDK, I used Flask with direct HTTP requests through the `requests` library to call Groq's chat completions endpoint. This keeps the backend aligned with older Python support while still allowing the chatbot to function with modern LLM responses.
+
+The main implementation points were:
+
+- Flask backend with a `/api/chat` endpoint
+- `.env` based API key loading using `python-dotenv`
+- Direct Groq API access through HTTP, avoiding newer SDK dependency issues
+- Next.js + TypeScript frontend with chat history and loading state
+- CORS and environment-based configuration for local and production deployment
+- Python 3.8 pinned runtime support through Docker and compatibility checks in CI
+
+I also added a research-style write-up explaining the challenge, the constraints, and the approach used to solve it. The main idea was to avoid dependency lock-in and use the most stable integration layer possible, which is the HTTP API itself.
+
+If needed, I can also walk you through the deployment steps or explain how the compatibility proof works in GitHub Actions.
+
+Best,
+[Your Name]
