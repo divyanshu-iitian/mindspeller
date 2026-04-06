@@ -13,9 +13,6 @@ CORS(app)
 # Get API key from environment
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in .env file")
-
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 
@@ -28,6 +25,9 @@ def chat():
     Returns: { "reply": "bot response", "history": [...] }
     """
     try:
+        if not GROQ_API_KEY:
+            return jsonify({"error": "GROQ_API_KEY not found in .env file"}), 500
+
         data = request.get_json()
 
         if not data or 'message' not in data:
